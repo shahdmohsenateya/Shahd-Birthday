@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shahd's Birthday Brunch 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FFB6C8;
+    --pink-light: #FFD6E0;
+    --pink-bg: #FFF0F4;
+    --red: #C0192A;
+    --red-dark: #8B0E1A;
+    --cream: #FFF8F9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--pink-bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--red);
+    overflow-x: hidden;
+  }
+
+  .nav {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+  }
+  .nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--red);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .nav-dot.active { background: var(--red); }
+
+  section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    position: relative;
+  }
+
+  .card {
+    background: var(--pink-light);
+    border: 2.5px solid var(--red);
+    border-radius: 24px;
+    padding: 40px 36px;
+    max-width: 520px;
+    width: 100%;
+    position: relative;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 32px;
+    border: 2.5px solid var(--red);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  #cover {
+    background: var(--pink);
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stamp-frame {
+    background: var(--pink-light);
+    border: 3px solid var(--red);
+    padding: 48px 40px 40px;
+    max-width: 380px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 0 0 8px var(--pink), 0 0 0 10px var(--red);
+  }
+
+  .cover-label {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+  .cover-name {
+    font-family: 'Dancing Script', cursive;
+    font-size: 64px;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .cover-subtitle {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 32px;
+  }
+  .cake-svg { margin: 24px auto; display: block; }
+  .cover-venue {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-top: 24px;
+    line-height: 2;
+  }
+  .crown { font-size: 28px; margin-bottom: 8px; }
+
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    opacity: 0.6;
+    margin-bottom: 8px;
+  }
+  .section-heading {
+    font-family: 'Dancing Script', cursive;
+    font-size: 38px;
+    color: var(--red);
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+  .section-sub {
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    color: var(--red);
+    opacity: 0.7;
+    margin-bottom: 28px;
+  }
+
+  /* QUIZ */
+  .quiz-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+  .quiz-item label {
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--red);
+    display: block;
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+  .quiz-item input {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid var(--red);
+    background: transparent;
+    padding: 6px 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--red);
+    outline: none;
+  }
+  .quiz-item input::placeholder { color: var(--red); opacity: 0.3; }
+
+  /* CHECKLIST */
+  #checklist { background: var(--pink-bg); }
+  .check-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 12px;
+    transition: background 0.15s;
+  }
+  .check-item:hover { background: rgba(192,25,42,0.06); }
+  .check-item input[type="checkbox"] { display: none; }
+  .check-box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--red);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .check-item.checked .check-box { background: var(--red); }
+  .check-item.checked .check-box::after { content: '✓'; color: var(--pink-light); font-size: 13px; font-weight: 700; }
+  .check-text { font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1.4; transition: opacity 0.2s; }
+  .check-item.checked .check-text { opacity: 0.5; text-decoration: line-through; }
+
+  .score-bar-wrap { margin-top: 28px; padding: 20px; background: rgba(192,25,42,0.06); border-radius: 16px; }
+  .score-display { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; }
+  .score-num { font-size: 48px; font-weight: 300; color: var(--red); line-height: 1; }
+  .score-label { font-family: 'Dancing Script', cursive; font-size: 22px; color: var(--red); }
+  .tier-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .tier-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 0;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+  .tier-item.active { opacity: 1; font-weight: 500; }
+  .tier-range { opacity: 0.6; }
+
+  /* THIS OR THAT */
+  #thisorthat { background: var(--pink); }
+  .tot-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .tot-row { display: grid; grid-template-columns: 1fr 40px 1fr; align-items: center; gap: 8px; }
+  .tot-btn {
+    padding: 10px 12px;
+    border: 1.5px solid var(--red);
+    border-radius: 12px;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--red);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .tot-btn:hover { background: rgba(192,25,42,0.08); }
+  .tot-btn.selected-left, .tot-btn.selected-right { background: var(--red); color: var(--pink-light); }
+  .tot-vs { text-align: center; font-size: 11px; letter-spacing: 1px; opacity: 0.4; font-weight: 500; }
+  .tot-action { display: flex; gap: 10px; margin-top: 20px; }
+
+  .btn-primary {
+    flex: 1;
+    padding: 14px;
+    background: var(--red);
+    color: var(--pink-light);
+    border: none;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary {
+    padding: 14px 20px;
+    background: transparent;
+    color: var(--red);
+    border: 1.5px solid var(--red);
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(192,25,42,0.08); }
+
+  .verdict-box {
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--red);
+    border-radius: 16px;
+    color: var(--pink-light);
+    display: none;
+    animation: popIn 0.3s ease;
+  }
+  .verdict-box.show { display: block; }
+
+  @keyframes popIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .verdict-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; margin-bottom: 8px; }
+  .verdict-name { font-family: 'Dancing Script', cursive; font-size: 32px; }
+  .verdict-sub { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+
+  .players-input { margin-bottom: 20px; padding: 14px 16px; background: rgba(192,25,42,0.06); border-radius: 14px; }
+  .players-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; margin-bottom: 10px; display: block; }
+  .players-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .player-tag { background: var(--red); color: var(--pink-light); padding: 4px 12px; border-radius: 20px; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+  .player-tag button { background: none; border: none; color: var(--pink-light); cursor: pointer; font-size: 14px; padding: 0; line-height: 1; opacity: 0.7; }
+  .player-add { display: flex; gap: 8px; }
+  .player-add input {
+    flex: 1;
+    border: 1.5px solid var(--red);
+    background: transparent;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--red);
+    outline: none;
+  }
+  .player-add input::placeholder { color: var(--red); opacity: 0.35; }
+  .player-add button { padding: 8px 16px; background: var(--red); color: var(--pink-light); border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; }
+
+  /* BINGO */
+  #bingo { background: var(--pink-bg); }
+
+  .bingo-instructions {
+    font-size: 12.5px;
+    text-align: center;
+    color: var(--red);
+    opacity: 0.75;
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+
+  .bingo-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    margin-bottom: 18px;
+  }
+
+  .bingo-cell {
+    aspect-ratio: 1;
+    border: 1.5px solid var(--red);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 9px;
+    line-height: 1.25;
+    padding: 4px 3px;
+    cursor: pointer;
+    transition: all 0.18s;
+    color: var(--red);
+    position: relative;
+    user-select: none;
+    background: transparent;
+  }
+  .bingo-cell:hover { background: rgba(192,25,42,0.08); }
+  .bingo-cell.stamped { background: var(--red); color: var(--pink-light); }
+  .bingo-cell.free-space { background: var(--pink); font-weight: 600; font-size: 9px; }
+  .bingo-cell.free-space.stamped { background: var(--red); color: var(--pink-light); }
+  .bingo-cell.selected-cell { outline: 2.5px solid var(--red-dark); outline-offset: 1px; }
+
+  .bingo-name-label { font-size: 8px; opacity: 0.85; margin-top: 2px; font-weight: 600; display: block; }
+
+  .bingo-banner {
+    display: none;
+    text-align: center;
+    padding: 16px;
+    background: var(--red);
+    border-radius: 14px;
+    color: var(--pink-light);
+    margin-top: 12px;
+    animation: popIn 0.35s ease;
+  }
+  .bingo-banner.show { display: block; }
+  .bingo-banner-title { font-family: 'Dancing Script', cursive; font-size: 36px; display: block; }
+  .bingo-banner-sub { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.8; margin-top: 4px; }
+
+  .bingo-actions { display: flex; gap: 10px; margin-top: 14px; }
+
+  .name-input-area { margin-bottom: 14px; padding: 12px 14px; background: rgba(192,25,42,0.05); border-radius: 12px; }
+  .name-input-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; margin-bottom: 8px; display: block; }
+  .name-input-area input {
+    width: 100%;
+    border: 1.5px solid var(--red);
+    background: transparent;
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--red);
+    outline: none;
+  }
+  .name-input-area input::placeholder { color: var(--red); opacity: 0.35; }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.4;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-6px); }
+  }
+
+  @media (max-width: 480px) {
+    .cover-name { font-size: 52px; }
+    .stamp-frame { padding: 36px 24px 28px; }
+    .card { padding: 28px 20px; }
+    .section-heading { font-size: 30px; }
+    .tot-btn { font-size: 11px; padding: 8px 8px; }
+    .bingo-cell { font-size: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Page sections">
+  <div class="nav-dot active" onclick="scrollToSection(0)"></div>
+  <div class="nav-dot" onclick="scrollToSection(1)"></div>
+  <div class="nav-dot" onclick="scrollToSection(2)"></div>
+  <div class="nav-dot" onclick="scrollToSection(3)"></div>
+  <div class="nav-dot" onclick="scrollToSection(4)"></div>
+</nav>
+
+<!-- SECTION 1: COVER -->
+<section id="cover">
+  <div class="stamp-frame">
+    <div class="crown">💋</div>
+    <p class="cover-label">Welcome to</p>
+    <h1 class="cover-name">Shahd's<br>Birthday</h1>
+    <p class="cover-subtitle">Brunch</p>
+    <svg class="cake-svg" width="120" height="90" viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="40" y1="18" x2="40" y2="38" stroke="#C0192A" stroke-width="3" stroke-linecap="round"/>
+      <line x1="55" y1="14" x2="55" y2="38" stroke="#C0192A" stroke-width="3" stroke-linecap="round"/>
+      <line x1="70" y1="18" x2="70" y2="38" stroke="#C0192A" stroke-width="3" stroke-linecap="round"/>
+      <line x1="82" y1="22" x2="82" y2="38" stroke="#C0192A" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="40" cy="15" rx="3" ry="5" fill="#C0192A" opacity="0.7"/>
+      <ellipse cx="55" cy="11" rx="3" ry="5" fill="#C0192A" opacity="0.7"/>
+      <ellipse cx="70" cy="15" rx="3" ry="5" fill="#C0192A" opacity="0.7"/>
+      <ellipse cx="82" cy="19" rx="3" ry="5" fill="#C0192A" opacity="0.7"/>
+      <ellipse cx="60" cy="38" rx="38" ry="8" fill="#FFB6C8" stroke="#C0192A" stroke-width="2"/>
+      <rect x="22" y="37" width="76" height="22" fill="#FFD6E0" stroke="#C0192A" stroke-width="2"/>
+      <path d="M22 44 Q30 50 38 44 Q46 50 54 44 Q62 50 70 44 Q78 50 86 44 Q92 50 98 44" stroke="#C0192A" stroke-width="1.5" fill="none"/>
+      <rect x="18" y="57" width="84" height="20" rx="4" fill="#FFB6C8" stroke="#C0192A" stroke-width="2"/>
+      <ellipse cx="60" cy="78" rx="48" ry="6" fill="#FFD6E0" stroke="#C0192A" stroke-width="1.5"/>
+      <text x="8" y="30" fill="#C0192A" font-size="12" opacity="0.6">✦</text>
+      <text x="100" y="26" fill="#C0192A" font-size="10" opacity="0.6">✦</text>
+    </svg>
+    <p class="cover-venue">Cake Cafe New Cairo<br>Must eat only cake<br>& wear pastel colors</p>
+  </div>
+  <p class="scroll-hint">scroll ↓</p>
+</section>
+
+<!-- SECTION 2: QUIZ -->
+<section id="quiz" style="background: var(--pink-bg);">
+  <div class="card">
+    <p class="section-title">Activity 01</p>
+    <h2 class="section-heading">Do You Even Know Her?</h2>
+    <p class="section-sub">all about her ✦</p>
+    <ul class="quiz-list">
+      <li class="quiz-item"><label>1. What is her most toxic trait?</label><input type="text" placeholder="be honest..."></li>
+      <li class="quiz-item"><label>2. What food would she eat forever?</label><input type="text" placeholder="think carefully"></li>
+      <li class="quiz-item"><label>3. Which celebrity is her type?</label><input type="text" placeholder="you know you know"></li>
+      <li class="quiz-item"><label>4. What's her biggest red flag in men?</label><input type="text" placeholder="..."></li>
+      <li class="quiz-item"><label>5. What's something she says all the time?</label><input type="text" placeholder="word for word"></li>
+      <li class="quiz-item"><label>6. What aesthetic matches her perfectly?</label><input type="text" placeholder="describe her vibe"></li>
+      <li class="quiz-item"><label>7. What would she become famous for?</label><input type="text" placeholder="realistically"></li>
+      <li class="quiz-item"><label>8. What's her comfort movie/show?</label><input type="text" placeholder="the one she rewatches"></li>
+      <li class="quiz-item"><label>9. What would ruin her perfect date?</label><input type="text" placeholder="instant deal breaker"></li>
+    </ul>
+  </div>
+</section>
+
+<!-- SECTION 3: CHECKLIST -->
+<section id="checklist">
+  <div class="card">
+    <p class="section-title">Activity 02</p>
+    <h2 class="section-heading">Check If You…</h2>
+    <p class="section-sub">mesh normal honestly</p>
+    <div class="check-grid" id="checkGrid"></div>
+    <div class="score-bar-wrap">
+      <div class="score-display">
+        <span class="score-num" id="scoreNum">0</span>
+        <span class="score-label" id="scoreTier">low drama</span>
+      </div>
+      <ul class="tier-list">
+        <li class="tier-item active" id="tier0"><span>low drama</span><span class="tier-range">0–4</span></li>
+        <li class="tier-item" id="tier1"><span>main character energy</span><span class="tier-range">5–8</span></li>
+        <li class="tier-item" id="tier2"><span>delulu with self-awareness</span><span class="tier-range">9–12</span></li>
+        <li class="tier-item" id="tier3"><span>cinematically unstable</span><span class="tier-range">13–16</span></li>
+        <li class="tier-item" id="tier4"><span>too far gone</span><span class="tier-range">17+</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: THIS OR THAT -->
+<section id="thisorthat">
+  <div class="card">
+    <p class="section-title">Activity 03</p>
+    <h2 class="section-heading">This or That</h2>
+    <p class="section-sub">ana mesh toxic bas…</p>
+    <div class="players-input">
+      <span class="players-label">Add player names (for random defender pick)</span>
+      <div class="player-add">
+        <input type="text" id="playerInput" placeholder="Type a name..." maxlength="20">
+        <button onclick="addPlayer()">+ Add</button>
+      </div>
+      <div class="players-tags" id="playerTags"></div>
+    </div>
+    <div class="tot-grid" id="totGrid"></div>
+    <div class="tot-action">
+      <button class="btn-primary" onclick="pickDefender()">🎲 Pick Defender</button>
+      <button class="btn-secondary" onclick="resetTot()">Reset</button>
+    </div>
+    <div class="verdict-box" id="verdictBox">
+      <p class="verdict-title">Must defend their choices</p>
+      <p class="verdict-name" id="verdictName"></p>
+      <p class="verdict-sub" id="verdictSub"></p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: BINGO -->
+<section id="bingo">
+  <div class="card">
+    <p class="section-title">Activity 04</p>
+    <h2 class="section-heading">Mix & Mingle Bingo</h2>
+    <p class="section-sub">Egyptian girl edition ✦</p>
+    <p class="bingo-instructions">Find someone who matches each square — write their name & tap to stamp it.<br>First to get <strong>5 in a row</strong> wins! 👑</p>
+    <div class="name-input-area">
+      <span class="name-input-label">Tap a square first, then type the name + Enter</span>
+      <input type="text" id="bingoNameInput" placeholder="e.g. Nour, Mariam, Salma...">
+    </div>
+    <div class="bingo-grid" id="bingoGrid"></div>
+    <div class="bingo-banner" id="bingoBanner">
+      <span class="bingo-banner-title">BINGO! 🎉</span>
+      <p class="bingo-banner-sub" id="bingoWinMsg"></p>
+    </div>
+    <div class="bingo-actions">
+      <button class="btn-primary" onclick="shuffleBingo()">🔀 New Card</button>
+      <button class="btn-secondary" onclick="resetBingo()">Reset</button>
+    </div>
+  </div>
+</section>
+
+<script>
+// ---- CHECKLIST ----
+const checkItems = [
+  'Said "ana gayya" while still at home',
+  'Took photos of the food before eating',
+  'Stalked someone through mutual followers',
+  'Reopened a chat just to reread old messages',
+  'Delayed replying to seem mysterious',
+  'Said "khalas I\'m over it" and absolutely weren\'t',
+  'Stalked a girl\'s whole account accidentally',
+  'Had a crush on someone objectively terrible',
+  'Said "mesh far2a ma3aya" when it absolutely mattered',
+  'Typed a long message then deleted it completely',
+  'Took 100 photos and posted only one',
+  'Wanted to disappear after sending a risky text',
+  'Checked if someone unfollowed you',
+  'Stayed in a bad mood because your outfit didn\'t look right',
+  'Investigated someone\'s ex out of curiosity',
+  'Refreshed your story views too many times',
+  'Reposted something hoping one person would understand it',
+  'Acted busy to avoid replying immediately',
+  'Checked your phone hoping for a specific notification'
+];
+
+const tiers = [
+  { label: 'low drama', range: [0,4] },
+  { label: 'main character energy', range: [5,8] },
+  { label: 'delulu with self-awareness', range: [9,12] },
+  { label: 'cinematically unstable', range: [13,16] },
+  { label: 'too far gone', range: [17, 99] }
+];
+
+const checkGrid = document.getElementById('checkGrid');
+checkItems.forEach(text => {
+  const item = document.createElement('label');
+  item.className = 'check-item';
+  item.innerHTML = `<input type="checkbox"><div class="check-box"></div><span class="check-text">${text}</span>`;
+  item.querySelector('input').addEventListener('change', function() {
+    item.classList.toggle('checked', this.checked);
+    updateScore();
+  });
+  checkGrid.appendChild(item);
+});
+
+function updateScore() {
+  const checked = document.querySelectorAll('#checkGrid input:checked').length;
+  document.getElementById('scoreNum').textContent = checked;
+  let tierIdx = tiers.findIndex((t,i) => checked >= t.range[0] && checked <= t.range[1]);
+  if (tierIdx < 0) tierIdx = tiers.length - 1;
+  document.getElementById('scoreTier').textContent = tiers[tierIdx].label;
+  document.querySelectorAll('.tier-item').forEach((el, i) => el.classList.toggle('active', i === tierIdx));
+}
+
+// ---- THIS OR THAT ----
+const totPairs = [
+  ['boring but loyal', 'toxic but attractive'],
+  ['double text first', 'stalk first'],
+  ['hard launch immediately', 'soft launch relationship'],
+  ['funny with no money', 'rich with no personality'],
+  ['someone impossible to get', 'obsessed with you'],
+  ['disappear for 7 hours', 'reply instantly'],
+  ['average but obsessed with you', 'pretty but emotionally unavailable'],
+  ['accidentally post a bad photo', 'accidentally send a risky text'],
+  ['be the tea', 'know all the tea']
+];
+
+const totGrid = document.getElementById('totGrid');
+totPairs.forEach((pair, i) => {
+  const row = document.createElement('div');
+  row.className = 'tot-row';
+  row.innerHTML = `
+    <button class="tot-btn" onclick="selectTot(${i},0,this)">${pair[0]}</button>
+    <span class="tot-vs">or</span>
+    <button class="tot-btn" onclick="selectTot(${i},1,this)">${pair[1]}</button>`;
+  totGrid.appendChild(row);
+});
+
+function selectTot(rowIdx, side, btn) {
+  const btns = totGrid.children[rowIdx].querySelectorAll('.tot-btn');
+  btns.forEach(b => b.classList.remove('selected-left','selected-right'));
+  btn.classList.add(side === 0 ? 'selected-left' : 'selected-right');
+}
+
+let players = [];
+const playerInput = document.getElementById('playerInput');
+playerInput.addEventListener('keydown', e => { if (e.key === 'Enter') addPlayer(); });
+
+function addPlayer() {
+  const name = playerInput.value.trim();
+  if (!name || players.includes(name)) { playerInput.value = ''; return; }
+  players.push(name);
+  playerInput.value = '';
+  renderPlayers();
+}
+function removePlayer(name) {
+  players = players.filter(p => p !== name);
+  renderPlayers();
+}
+function renderPlayers() {
+  document.getElementById('playerTags').innerHTML = players.map(p =>
+    `<span class="player-tag">${p}<button onclick="removePlayer('${p}')">×</button></span>`
+  ).join('');
+}
+function pickDefender() {
+  const box = document.getElementById('verdictBox');
+  const nameEl = document.getElementById('verdictName');
+  const subEl = document.getElementById('verdictSub');
+  if (!players.length) {
+    nameEl.textContent = '???'; subEl.textContent = 'Add player names above first!';
+    box.classList.add('show'); return;
+  }
+  const chosen = players[Math.floor(Math.random() * players.length)];
+  const msgs = ['Most suspicious answers 👀','Has explaining to do 💅','The court demands answers ⚖️','We all saw your choices 🎤'];
+  box.classList.remove('show');
+  setTimeout(() => {
+    nameEl.textContent = chosen;
+    subEl.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+    box.classList.add('show');
+  }, 50);
+}
+function resetTot() {
+  document.querySelectorAll('.tot-btn').forEach(b => b.classList.remove('selected-left','selected-right'));
+  document.getElementById('verdictBox').classList.remove('show');
+}
+
+// ---- BINGO ----
+const allBingoSquares = [
+  'Came late &\nsaid "ana gayya"','Rewatched a reel\n10+ times today','Wears all black\nin summer',
+  'Koshary\naddict','Reads the last\npage first','Has a secret\nInstagram account',
+  'Cries at\n3am randomly','Orders delivery\nthen regrets it','Says "mesh far2a"\nbut it matters',
+  'Never replies\non time','Has screenshots\nof everything','Knows all\nthe tea ☕',
+  'Obsessed with\nher nails','Owns 3+\npink things today','Says "tayeb"\nand means no',
+  'Stalked someone\'s\nold photos today','Cried at\na TikTok','Took photos before\neating anything',
+  'Has a "no screen"\nrule she ignores','Says "mesh normal"\nabout herself',
+  'Refreshed story\nviews 5+ times','Is wearing\npastel today','Has a crush\non a red flag',
+  'Owns too many\nskincare products','Reads horoscopes\ndaily','Rewatches the\nsame show',
+  'Overthinks every\ntext she sends','Planned her\noutfit last night','Cancels plans\nthen feels bad',
+  'Knows all\nthe Mahraganat',"Can't sleep\nbefore 2am",'Has 1000+\ncamera roll photos',
+  'Loves Om Kalthoum\nsecretly','Sends voice\nnotes only','Has a playlist\nfor every mood',
+  'Leaves on\nread delivery','Says "yalla"\n20x a day','Has an old crush\nshe won\'t admit',
+  'Takes forever\nto get ready','Knows every\nTurkish drama','Still has\nold convos saved',
+  'Uses "habibi"\nfor everything','Dances alone\nwhen no one\'s watching',
+  'Makes everyone laugh\nwithout trying','Ate om ali\nrecently','Went to\nSahel this summer',
+  'Has a vision\nboard somewhere','Leaves voice\nnotes > 3 min','Plans outfits\nmonths in advance',
+  'Has a moodboard\nfor her future apartment'
+];
+
+let bingoSquares = [], selectedCell = null, bingoNames = {};
+
+function shuffleBingo() {
+  const pool = [...allBingoSquares].sort(() => Math.random() - 0.5).slice(0, 24);
+  pool.splice(12, 0, 'FREE\nSPACE ✦');
+  bingoSquares = pool;
+  bingoNames = {};
+  selectedCell = null;
+  document.getElementById('bingoBanner').classList.remove('show');
+  document.getElementById('bingoNameInput').value = '';
+  renderBingo();
+}
+
+function renderBingo() {
+  const g = document.getElementById('bingoGrid');
+  g.innerHTML = '';
+  bingoSquares.forEach((text, i) => {
+    const isFree = i === 12;
+    const isStamped = isFree || !!bingoNames[i];
+    const cell = document.createElement('div');
+    cell.className = 'bingo-cell'
+      + (isFree ? ' free-space' : '')
+      + (isStamped ? ' stamped' : '')
+      + (i === selectedCell ? ' selected-cell' : '');
+    const nameHtml = bingoNames[i] ? `<span class="bingo-name-label">${bingoNames[i]}</span>` : '';
+    cell.innerHTML = `<span>${text.replace(/\n/g,'<br>')}${nameHtml}</span>`;
+    if (!isFree) cell.onclick = () => clickCell(i);
+    g.appendChild(cell);
+  });
+}
+
+function clickCell(idx) {
+  const nameVal = document.getElementById('bingoNameInput').value.trim();
+  if (nameVal) {
+    bingoNames[idx] = nameVal;
+    document.getElementById('bingoNameInput').value = '';
+    selectedCell = null;
+    checkBingo();
+  } else {
+    selectedCell = idx;
+  }
+  renderBingo();
+  document.getElementById('bingoNameInput').focus();
+}
+
+document.getElementById('bingoNameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const v = e.target.value.trim();
+    if (v && selectedCell !== null) {
+      bingoNames[selectedCell] = v;
+      e.target.value = '';
+      selectedCell = null;
+      checkBingo();
+      renderBingo();
+    }
+  }
+});
+
+function checkBingo() {
+  const stamped = Array.from({length:25}, (_,i) => i===12 || !!bingoNames[i]);
+  const lines = [
+    [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],
+    [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],
+    [0,6,12,18,24],[4,8,12,16,20]
+  ];
+  for (const line of lines) {
+    if (line.every(i => stamped[i])) {
+      document.getElementById('bingoBanner').classList.add('show');
+      document.getElementById('bingoWinMsg').textContent = "5 in a row — you're the most social one here 👑";
+      return;
+    }
+  }
+}
+
+function resetBingo() {
+  bingoNames = {}; selectedCell = null;
+  document.getElementById('bingoBanner').classList.remove('show');
+  document.getElementById('bingoNameInput').value = '';
+  renderBingo();
+}
+
+shuffleBingo();
+
+// ---- NAV ----
+const sections = ['cover','quiz','checklist','thisorthat','bingo'];
+function scrollToSection(i) {
+  document.getElementById(sections[i]).scrollIntoView({ behavior: 'smooth' });
+}
+window.addEventListener('scroll', () => {
+  const current = Math.round(window.scrollY / window.innerHeight);
+  document.querySelectorAll('.nav-dot').forEach((dot, i) => dot.classList.toggle('active', i === current));
+});
+</script>
+</body>
+</html>
